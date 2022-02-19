@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.saba.saba">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_saba_foreground"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_saba_foreground"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Sabaid">
+        <activity
+            android:name=".ui.payment.ConfirmPaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.payment.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.payment.CreatePaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.event.CreateEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.form.FormActivity"
+            android:exported="true"
+            android:label="@string/title_activity_form"
+            android:theme="@style/Theme.Sabaid.NoActionBar" />
+        <activity
+            android:name=".ui.scholarship.DetailScholarshipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.internship.DetailInternshipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.event.DetailEventActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.kost.DetailKostActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.forum.DetailForumActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.internship.InternshipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.scholarship.ScholarshipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.news.NewsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.kost.KostActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.event.EventActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.forum.ForumActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:noHistory="true">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity android:name=".ui.news.DetailNewsActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBk-W30_yboYgJHgJVOeUL6fHAlfB6pJl4" />
+    </application>
+
+</manifest>
