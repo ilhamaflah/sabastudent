@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley
 import id.saba.saba.HOST
 import id.saba.saba.R
 import id.saba.saba.VolleyMultipartRequest
+import id.saba.saba.databinding.ActivityRegisterBinding
 import kotlinx.android.synthetic.main.activity_register.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,17 +33,18 @@ import java.io.IOException
 
 class RegisterActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityRegisterBinding
     var imageView: ImageView? = null
     var bitmap : Bitmap? = null
     private var handler : Handler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        supportActionBar?.hide()
-        setContentView(R.layout.activity_register)
 
-        imageView = findViewById(R.id.imageViewRegister_1)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        imageView = binding.imgRegistrasi
 
         // pengganti startActivityForResult()
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -61,9 +63,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        imageViewRegister_1.setOnClickListener {
-            if (textInputNamaR_1.editText?.text.toString().trim { it <= ' '}.isEmpty()){
-            textInputNamaR_1.editText?.error = "Nama masih kosong"
+        binding.layoutImg.setOnClickListener {
+            if (binding.textInputUsernameR1.editText?.text.toString().trim { it <= ' '}.isEmpty()){
+            binding.textInputNamaR1.editText?.error = "Nama masih kosong"
             textInputNamaR_1.requestFocus()
             }
             else if (textInputUsernameR_1.editText?.text.toString().trim { it <= ' '}.isEmpty()) {
@@ -110,7 +112,6 @@ class RegisterActivity : AppCompatActivity() {
 
             imageView!!.setImageBitmap(bitmap)
             imageView!!.scaleType = ImageView.ScaleType.FIT_CENTER
-            textViewPlaceholderR_1.text = ""
         } catch (e: IOException) {
             e.printStackTrace()
         }

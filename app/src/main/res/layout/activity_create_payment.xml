@@ -88,11 +88,12 @@
             android:hint="Title">
 
             <com.google.android.material.textfield.TextInputEditText
-                style="@style/Theme.Sabaid.TextInput"
                 android:id="@+id/txtTitle"
+                style="@style/Theme.Sabaid.TextInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
