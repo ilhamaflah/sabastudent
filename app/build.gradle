@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     archivesBaseName = "SABA"
 
     defaultConfig {
-        applicationId "id.saba.saba"
+        applicationId "id.saba.id"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
