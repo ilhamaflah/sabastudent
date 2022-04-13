@@ -16,10 +16,10 @@ import org.json.JSONObject
 import splitties.toast.toast
 
 class ForumController() {
-    fun listForum(forums: ArrayList<Forum>, adapter: ForumAdapter, konteks: Context){
+    fun listForum(forums: ArrayList<Forum>, adapter: ForumAdapter, username: String, konteks: Context){
         val queue = Volley.newRequestQueue(konteks)
         val url = HOST().Host + "api/forum"
-        val stringRequest = StringRequest(Request.Method.GET, url, {
+        val stringRequest = object : StringRequest(Request.Method.POST, url, {
             try {
                 val obj = JSONObject(it)
                 val arr = obj.getJSONArray("forum")
@@ -61,7 +61,13 @@ class ForumController() {
             }
         }, {
             toast(it.message.toString())
-        })
+        }){
+            override fun getParams(): MutableMap<String, String> {
+                return HashMap<String, String>().apply {
+                    put("user_username", username)
+                }
+            }
+        }
         queue.add(stringRequest)
     }
 

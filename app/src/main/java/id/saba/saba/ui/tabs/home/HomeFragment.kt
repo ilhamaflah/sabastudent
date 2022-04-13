@@ -2,6 +2,7 @@ package id.saba.saba.ui.tabs.home
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -57,8 +58,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        loadData()
+        val handler = Handler()
+        handler.postDelayed({
+            initViews()
+            loadData()
+            }, 0)
     }
 
     private fun loadData() {

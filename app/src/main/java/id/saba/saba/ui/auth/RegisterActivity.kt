@@ -25,6 +25,7 @@ import id.saba.saba.databinding.ActivityRegisterBinding
 import kotlinx.android.synthetic.main.activity_register.*
 import org.json.JSONException
 import org.json.JSONObject
+import splitties.activities.start
 import splitties.toast.UnreliableToastApi
 import splitties.toast.longToast
 import splitties.toast.toast
@@ -45,6 +46,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         imageView = binding.imgRegistrasi
+        binding.btnBack.setOnClickListener { onBackPressed() }
 
         // pengganti startActivityForResult()
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -130,8 +132,15 @@ class RegisterActivity : AppCompatActivity() {
             fun onResponse(response: NetworkResponse) {
                 try {
                     val obj = JSONObject(String(response.data))
-                    longToast("Normal: " + obj.getString("success"))
-                    onBackPressed()
+                    if(obj.has("success")){
+                        longToast("Akun berhasil dibuat")
+                        finish()
+                        start<LoginActivity>()
+                    }
+                    else if(obj.has("errorInfo")) {
+                        val arr = obj.getJSONArray("errorInfo")
+                        if(arr[2] == "Duplicate entry '" + textInputUsernameR_1.editText?.text.toString() + "' for key 'PRIMARY'") toast("Username telah digunakan")
+                    }
                 } catch (e: JSONException) {
                     longToast("Error: " + e.message.toString())
                 }

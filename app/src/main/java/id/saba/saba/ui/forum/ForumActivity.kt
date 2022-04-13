@@ -1,5 +1,7 @@
 package id.saba.saba.ui.forum
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.util.rangeTo
@@ -28,6 +30,7 @@ class ForumActivity : AppCompatActivity(), ForumAdapter.OnForumClickListener {
     private lateinit var binding: ActivityForumBinding
     private lateinit var adapter: ForumAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +90,9 @@ class ForumActivity : AppCompatActivity(), ForumAdapter.OnForumClickListener {
         adapter = ForumAdapter(forums, this)
         binding.forumRV.adapter = adapter
         binding.forumRV.layoutManager = layoutManager*/
-        ForumController().listForum(forums, adapter, this)
+        sharedPref = this.getSharedPreferences("SABA", Context.MODE_PRIVATE)
+        val USER = sharedPref.getString("USER", "")
+        ForumController().listForum(forums, adapter, USER.toString(),this)
     }
 
     private fun initView() {
