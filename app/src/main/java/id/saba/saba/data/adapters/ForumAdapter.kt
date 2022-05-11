@@ -1,7 +1,6 @@
 package id.saba.saba.data.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -13,18 +12,11 @@ class ForumAdapter(val data: ArrayList<Forum>, private val listener: OnForumClic
 
     interface OnForumClickListener {
         fun onForumCardClickListener(position: Int)
+        fun onForumReportClickListener(position: Int)
     }
 
     inner class ForumHolder(private val binding: CardForumBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-
-        init {
-            binding.cardForum.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            listener.onForumCardClickListener(absoluteAdapterPosition)
-        }
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(forum: Forum) {
             binding.txtForumHeadline.text = forum.headline
@@ -36,6 +28,14 @@ class ForumAdapter(val data: ArrayList<Forum>, private val listener: OnForumClic
             binding.txtForumDownvote.text = forum.downvote.toString()
             binding.txtForumViewer.text = forum.viewer.toString()
             binding.txtForumComment.text = forum.commentCount().toString()
+
+            binding.cardForum.setOnClickListener {
+                listener.onForumCardClickListener(absoluteAdapterPosition)
+            }
+
+            binding.btnReport.setOnClickListener {
+                listener.onForumReportClickListener(absoluteAdapterPosition)
+            }
         }
     }
 

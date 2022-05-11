@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioSpam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spam" />
+
+        <RadioButton
+            android:id="@+id/radioScam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scam" />
+
+        <RadioButton
+            android:id="@+id/radioFalseInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="False Information" />
+
+        <RadioButton
+            android:id="@+id/radioSH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexual Harassment" />
+
+        <RadioButton
+            android:id="@+id/radioViolence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Violence" />
+
+        <RadioButton
+            android:id="@+id/radioOthers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Others" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtOthersLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Enter information"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtOthers"
+            style="@style/Theme.Sabaid.TextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:lines="3" />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
