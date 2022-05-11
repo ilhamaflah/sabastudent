@@ -4,12 +4,18 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.RadioButton
+import androidx.appcompat.app.AlertDialog
 import androidx.core.util.rangeTo
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import id.saba.saba.HOST
 import id.saba.saba.data.adapters.ForumAdapter
 import id.saba.saba.data.controllers.ForumController
@@ -17,6 +23,7 @@ import id.saba.saba.data.models.Comment
 import id.saba.saba.data.models.Forum
 import id.saba.saba.data.models.User
 import id.saba.saba.databinding.ActivityForumBinding
+import id.saba.saba.databinding.DialogForumReportBinding
 import id.saba.saba.ui.form.FormActivity
 import org.json.JSONArray
 import org.json.JSONException
@@ -31,6 +38,8 @@ class ForumActivity : AppCompatActivity(), ForumAdapter.OnForumClickListener {
     private lateinit var adapter: ForumAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var dialogBinding: DialogForumReportBinding
+    private lateinit var dialogReport: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,5 +137,86 @@ class ForumActivity : AppCompatActivity(), ForumAdapter.OnForumClickListener {
 
     override fun onForumCardClickListener(position: Int) {
         start<DetailForumActivity> { this.putExtra("FORUM", forums[position]) }
+    }
+
+    override fun onForumReportClickListener(position: Int) {
+        openReportDialog(position)
+    }
+
+    private fun openReportDialog(position: Int) {
+        val forum = forums[position]
+        if (!this::dialogBinding.isInitialized) {
+            dialogBinding = DialogForumReportBinding.inflate(layoutInflater, binding.root, false)
+            dialogReport = MaterialAlertDialogBuilder(this)
+                .setTitle("Report Forum")
+                .setView(dialogBinding.root)
+                .setPositiveButton("Report") { _, _ -> report(forum) }
+                .setNegativeButton("Cancel", null)
+                .create()
+        }
+
+        dialogBinding.radioSpam.isChecked = true
+        dialogBinding.txtOthers.text?.clear()
+        dialogBinding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            dialogBinding.txtOthersLayout.visibility =
+                if (checkedId == dialogBinding.radioOthers.id) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+
+        dialogReport.show()
+    }
+
+    private fun report(forum: Forum) {
+        dialogReport.dismiss()
+        Snackbar
+            .make(binding.layoutForum, "Report success", Snackbar.LENGTH_SHORT)
+            .show()
+        /*val queue = Volley.newRequestQueue(this)
+        val url = "${HOST().Host}/api/forum/${forum.id}/report"
+        val request = object : StringRequest(
+            Method.POST,
+            url,
+            { res ->
+                try {
+                    // kalau success report
+                    dialogReport.dismiss()
+                    Snackbar
+                        .make(binding.layoutForum, "Report success", Snackbar.LENGTH_SHORT)
+                        .show()
+                } catch (e: Exception) {
+                    Log.d("ERR_RES", e.message.toString())
+                }
+            },
+            { err ->
+                Log.d("ERR", err.message.toString())
+            }
+        ) {
+            override fun getParams(): MutableMap<String, String> {
+                val user = sharedPref.getString("USER", "")
+                val checkedRadioButtonId = dialogBinding.radioGroup.checkedRadioButtonId
+                val choice = findViewById<RadioButton>(checkedRadioButtonId).text.toString()
+
+                // atur params yang mau dikirim ke server
+                return if (checkedRadioButtonId == dialogBinding.radioOthers.id) {
+                    val info = dialogBinding.txtOthers.text.toString()
+
+                    hashMapOf(
+                        "user" to user!!,
+                        "choice" to choice,
+                        "info" to info
+                    )
+                } else {
+                    hashMapOf(
+                        "user" to user!!,
+                        "choice" to choice,
+                    )
+                }
+            }
+        }
+
+        queue.add(request)*/
     }
 }

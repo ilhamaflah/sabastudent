@@ -1,43 +1,49 @@
 package id.saba.saba.data.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import com.smarteist.autoimageslider.SliderViewAdapter
-import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.squareup.picasso.Picasso
-import id.saba.saba.R
 import id.saba.saba.SliderModal
-import kotlinx.android.synthetic.main.slider_layout.view.*
+import id.saba.saba.databinding.SliderLayoutBinding
 
-class SliderAdapter(private val context: Context, sliderModalArrayList: ArrayList<SliderModal>) : SliderViewAdapter<SliderAdapter.SliderAdapterVH>() {
+class SliderAdapter(
+    private val data: ArrayList<SliderModal>,
+    val viewPager: ViewPager2,
+    private val listener: SliderListener
+) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
-    private var data = sliderModalArrayList
-
-    override fun onCreateViewHolder(parent: ViewGroup): SliderAdapterVH {
-        val inflate: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.slider_layout, parent, false)
-
-        return SliderAdapterVH(inflate)
+    interface SliderListener {
+        fun onSliderClick(position: Int)
     }
 
-    override fun onBindViewHolder(viewHolder: SliderAdapterVH, position: Int) {
-        val sliderItem = data[position]
-        //viewHolder.imgBackground.setBackgroundResource(sliderItem.img)
-        /*if(data[position].title == "Kost"){
-            viewHolder.imgBackground.scaleType = ImageView.ScaleType.CENTER_CROP
-        }*/
-        Picasso.get().load(sliderItem.img).into(viewHolder.imgBackground)
-        viewHolder.itemView.setOnClickListener {
-            Toast.makeText(context, "This is item in position $position", Toast.LENGTH_SHORT).show()
+    inner class SliderViewHolder(private val binding: SliderLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        init {
+            binding.idRLSlider.setOnClickListener(this)
+        }
+
+        fun bind(slider: SliderModal) {
+            Picasso.get().load(slider.img).into(binding.idIV)
+        }
+
+        override fun onClick(v: View?) {
+            listener.onSliderClick(absoluteAdapterPosition)
         }
     }
 
-    override fun getCount() = data.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
+        val binding =
+            SliderLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    class SliderAdapterVH(itemView: View): ViewHolder(itemView) {
-        val imgBackground: ImageView = itemView.idIV
+        return SliderViewHolder(binding)
     }
+
+    override fun onBindViewHolder(holder: SliderViewHolder, position: Int) =
+        holder.bind(data[position])
+
+    override fun getItemCount() = data.size
 }

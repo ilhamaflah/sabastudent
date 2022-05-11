@@ -12,6 +12,7 @@ class CommentAdapter(val data: ArrayList<Comment>, private val listener: OnComme
 
     interface OnCommentClickListener {
         fun onVoteComment(position: Int, tipe: String)
+        fun onCommentReportClickListener(position: Int)
     }
 
     inner class CommetnHolder(private val binding: CardForumCommentBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -29,6 +30,10 @@ class CommentAdapter(val data: ArrayList<Comment>, private val listener: OnComme
 
             binding.btnDownvote.setOnClickListener {
                 listener.onVoteComment(absoluteAdapterPosition, "downvote")
+            }
+
+            binding.btnReport.setOnClickListener {
+                listener.onCommentReportClickListener(absoluteAdapterPosition)
             }
         }
     }

@@ -42,8 +42,8 @@ class DetailEventActivity : AppCompatActivity() {
                 "2021-08-24",
                 "2021-08-27",
                 "2021-09-1",
-                "2021-08-27",
-                "2021-09-1",
+                "2021-08-27 12:06:00",
+                "2021-09-1 18:00:00",
                 "00000",
                 "http://www.sabastudent.com"
             )

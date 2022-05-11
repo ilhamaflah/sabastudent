@@ -2,7 +2,9 @@ package id.saba.saba.data.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.parcel.Parcelize
+import java.lang.reflect.Type
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -22,12 +24,16 @@ data class Payment(
     @SerializedName("user_username")
     val user: String,
     @SerializedName("foto_verifikasi")
-    val fotoVerifikasi: String,
+    var fotoVerifikasi: String? = null,
 ) : Parcelable {
     fun totalString(): String {
         val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
         formatter.maximumFractionDigits = 0
 
         return formatter.format(biaya)
+    }
+
+    companion object {
+        val listTypeToken: Type = object : TypeToken<ArrayList<Payment>>() {}.type
     }
 }
