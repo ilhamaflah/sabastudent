@@ -77,7 +77,5 @@ class DetailNewsActivity : AppCompatActivity() {
             }
         }
         webView.settings.javaScriptEnabled = true
-
-        binding.btnBack.setOnClickListener { finish() }
     }
 }
