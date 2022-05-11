@@ -19,31 +19,27 @@ import splitties.toast.toast
 import java.io.ByteArrayOutputStream
 
 class EventController() {
-    fun postEvent(model: Event, bitmap: Bitmap, konteks: Context) {
+    fun postEvent(model: Event, bitmap: Bitmap, konteks: Context){
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
         //val encodeBase64 = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
 
         val volleyMultipartRequest = object : VolleyMultipartRequest(
-            Method.POST,
-            HOST().Host + "api/event/tambah",
-            Response.Listener<NetworkResponse> {
-                fun onResponse(response: NetworkResponse) {
-                    try {
-                        val obj = JSONObject(String(response.data))
-                        toast("Normal: " + obj.getString("success"))
-                        if (obj.has("message")) {
-                            toast(obj.getString("message"))
-                        }
-                    } catch (e: JSONException) {
-                        longToast("Error: " + e.message.toString())
-                    }
+            Request.Method.POST, HOST().Host + "api/event/tambah", Response.Listener<NetworkResponse> {
+            fun onResponse(response: NetworkResponse) {
+                try {
+                    val obj = JSONObject(String(response.data))
+                    toast("Normal: " + obj.getString("success"))
+                    if(obj.has("message")){ toast(obj.getString("message")) }
+                } catch (e: JSONException) {
+                    longToast("Error: " + e.message.toString())
                 }
-                onResponse(it)
-            },
+            }
+            onResponse(it)
+        },
             Response.ErrorListener {
                 toast(it.message.toString())
-            }) {
+            }){
             override fun getParams(): Map<String, String> {
                 return HashMap<String, String>().apply {
                     put("judul", model.judul)
@@ -61,17 +57,14 @@ class EventController() {
             override fun getByteData(): MutableMap<String, DataPart> {
                 val imagename = System.currentTimeMillis()
                 return HashMap<String, DataPart>().apply {
-                    put(
-                        "thumbnail",
-                        DataPart("$imagename.png", byteArrayOutputStream.toByteArray())
-                    )
+                    put("thumbnail", DataPart("$imagename.png", byteArrayOutputStream.toByteArray()))
                 }
             }
         }
         Volley.newRequestQueue(konteks).add(volleyMultipartRequest)
     }
 
-    fun listEvent(events: ArrayList<Event>, adapter: EventAdapter, konteks: Context) {
+    fun listEvent(events: ArrayList<Event>, adapter: EventAdapter, konteks: Context){
         val queue = Volley.newRequestQueue(konteks)
         val url = HOST().Host + "api/event"
         val stringRequest = StringRequest(Request.Method.GET, url, {
@@ -86,12 +79,7 @@ class EventController() {
                             data.getInt("id"),
                             data.getString("thumbnail"),
                             data.getString("judul"), data.getString("kutipan"),
-                            User(
-                                i,
-                                uploader.getString("nama"),
-                                uploader.getString("photo"),
-                                uploader.getString("username")
-                            ),
+                            User(i, uploader.getString("nama"), uploader.getString("photo"), uploader.getString("username")),
                             data.getString("deskripsi"),
                             "",
                             data.getString("timestamp"),

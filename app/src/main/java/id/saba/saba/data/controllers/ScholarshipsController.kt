@@ -17,7 +17,7 @@ class ScholarshipsController() {
     fun listScholarship(scholarships: ArrayList<Scholarship>, adapter: ScholarshipAdapter, konteks: Context){
         val queue = Volley.newRequestQueue(konteks)
         val url = HOST().Host + "api/beasiswa"
-        val stringRequest = StringRequest(Request.Method.GET, url, {
+        val stringRequest = StringRequest(Request.Method.GET, url, Response.Listener {
             try {
                 val obj = JSONObject(it)
                 val arr = obj.getJSONArray("beasiswa")
@@ -39,7 +39,7 @@ class ScholarshipsController() {
             } catch (e: JSONException) {
                 toast(e.message.toString())
             }
-        }, {
+        }, Response.ErrorListener {
             toast(it.message.toString())
         })
         queue.add(stringRequest)

@@ -1,7 +1,6 @@
 package id.saba.saba.ui.payment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,6 @@ class DetailPaymentFragment : BottomSheetDialogFragment() {
     }
 
     private fun initView() {
-        Log.d("PAYMENT", payment.toString())
         if (payment.konfirmasi == 0) {
             binding.btnConfirm.visibility = View.VISIBLE
         }

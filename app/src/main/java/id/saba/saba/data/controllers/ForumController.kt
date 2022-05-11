@@ -2,6 +2,7 @@ package id.saba.saba.data.controllers
 
 import android.content.Context
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import id.saba.saba.HOST
@@ -15,12 +16,7 @@ import org.json.JSONObject
 import splitties.toast.toast
 
 class ForumController() {
-    fun listForum(
-        forums: ArrayList<Forum>,
-        adapter: ForumAdapter,
-        username: String,
-        konteks: Context
-    ) {
+    fun listForum(forums: ArrayList<Forum>, adapter: ForumAdapter, username: String, konteks: Context){
         val queue = Volley.newRequestQueue(konteks)
         val url = HOST().Host + "api/forum"
         val stringRequest = object : StringRequest(Request.Method.POST, url, {
@@ -31,20 +27,11 @@ class ForumController() {
                     val comments = ArrayList<Comment>()
                     val data = arr.getJSONObject(i)
                     val uploader = data.getJSONObject("uploader")
-                    if (data.has("komentar_forum")) {
-                        for (x in 0 until data.getJSONArray("komentar_forum").length()) {
+                    if(data.has("komentar_forum")){
+                        for(x in 0 until data.getJSONArray("komentar_forum").length()){
                             val data_2 = data.getJSONArray("komentar_forum").getJSONObject(x)
-                            comments.add(
-                                Comment(
-                                    data_2.getInt("id"),
-                                    data_2.getString("userKomen"),
-                                    data_2.getString("userKomenPic"),
-                                    data_2.getString("timestamp"),
-                                    data_2.getString("komentar"),
-                                    0,
-                                    0
-                                )
-                            )
+                            comments.add(Comment(data_2.getInt("id"), data_2.getString("userKomen"), data_2.getString("userKomenPic"),
+                                data_2.getString("timestamp"), data_2.getString("komentar"), 0, 0))
                         }
 
                     }
@@ -55,12 +42,7 @@ class ForumController() {
                             data.getString("deskripsi"),
                             data.getString("thumbnail"),
                             data.getString("timestamp"),
-                            User(
-                                i,
-                                uploader.getString("nama"),
-                                uploader.getString("photo"),
-                                uploader.getString("username")
-                            ),
+                            User(i, uploader.getString("nama"), uploader.getString("photo"), uploader.getString("username")),
                             data.getInt("total_like"), 100, 101, comments
                         )
                     )
@@ -79,7 +61,7 @@ class ForumController() {
             }
         }, {
             toast(it.message.toString())
-        }) {
+        }){
             override fun getParams(): MutableMap<String, String> {
                 return HashMap<String, String>().apply {
                     put("user_username", username)
@@ -89,38 +71,28 @@ class ForumController() {
         queue.add(stringRequest)
     }
 
-    fun addKomentar(
-        comments: ArrayList<Comment>,
-        adapter: CommentAdapter,
-        konteks: Context,
-        id: Int,
-        username: String,
-        komentar: String
-    ) {
+    fun addKomentar(comments: ArrayList<Comment>, adapter: CommentAdapter, konteks: Context, id: Int, username: String, komentar: String){
         val queue = Volley.newRequestQueue(konteks)
         val url = HOST().Host + "api/forum/" + id + "/komentar"
         val stringRequest = object : StringRequest(Request.Method.POST, url, {
             try {
                 val obj = JSONObject(it)
-                if (obj.getBoolean("success")) {
+                if(obj.getBoolean("success")){
                     val data = obj.getJSONObject("data")
-                    comments.add(
-                        Comment(
-                            data.getInt("id"), obj.getString("userKomen"), obj.getString("userImg"),
-                            data.getString("timestamp"), data.getString("komentar"), 100, 5
-                        )
-                    )
+                    comments.add(Comment(
+                        data.getInt("id"), obj.getString("userKomen"), obj.getString("userImg"),
+                        data.getString("timestamp"), data.getString("komentar"), 100, 5
+                    ))
                     toast("Komentar terkirim")
-                } else {
-                    toast("Komentar gagal terkirim")
                 }
+                else{ toast("Komentar gagal terkirim") }
                 adapter.notifyDataSetChanged()
             } catch (e: JSONException) {
                 toast(e.message.toString())
             }
         }, {
             toast(it.message.toString())
-        }) {
+        }){
             override fun getParams(): MutableMap<String, String> {
                 return HashMap<String, String>().apply {
                     put("komentar", komentar)

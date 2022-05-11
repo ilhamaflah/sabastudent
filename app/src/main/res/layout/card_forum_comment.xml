@@ -80,26 +80,6 @@
                     android:text="XX hours ago"
                     android:textSize="8sp"
                     style="@style/TextAppearance.Sabaid.Caption" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btnReport"
-                    android:layout_width="24sp"
-                    android:layout_height="24sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="2dp"
-                        android:contentDescription="Report"
-                        android:src="@drawable/ic_round_report_24"
-                        app:tint="@color/primary" />
-                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </LinearLayout>
 

@@ -1,28 +1,17 @@
 package id.saba.saba.ui.payment
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.toolbox.Volley
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import id.saba.saba.HOST
-import id.saba.saba.VolleyMultipartRequest
 import id.saba.saba.data.models.Payment
 import id.saba.saba.databinding.ActivityConfirmPaymentBinding
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-
 
 class ConfirmPaymentActivity : AppCompatActivity() {
     private val GALLERY_PERMISSION_CODE = 101
@@ -30,7 +19,6 @@ class ConfirmPaymentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmPaymentBinding
     private lateinit var payment: Payment
     private lateinit var imageUri: Uri
-    private lateinit var imageBase64: String
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
@@ -93,75 +81,7 @@ class ConfirmPaymentActivity : AppCompatActivity() {
     }
 
     private fun upload() {
-        val sharedPref = this.getSharedPreferences("SABA", Context.MODE_PRIVATE)
-        val USER = sharedPref.getString("USER", "")
-        val queue = Volley.newRequestQueue(this)
-        val url = "${HOST().Host}api/$USER/history-pembayaran/${payment.id}/bukti"
-        val request = object : VolleyMultipartRequest(
-            Method.POST,
-            url,
-            { res ->
-                try {
-                    Log.d("res", String(res.data))
-                    val data = JSONObject(String(res.data))
-
-                    if (data.getBoolean("success")) {
-                        finish()
-                        Snackbar
-                            .make(
-                                binding.layout,
-                                "Success confirming payment",
-                                Snackbar.LENGTH_SHORT
-                            )
-                            .show()
-                    } else {
-                        Log.d("RES", res.toString())
-                        Snackbar
-                            .make(
-                                binding.layout,
-                                "An error occurred, try again later",
-                                Snackbar.LENGTH_SHORT
-                            )
-                            .show()
-                    }
-                } catch (e: Exception) {
-                    Log.e("ERR_RES", e.message.toString())
-                    Snackbar
-                        .make(
-                            binding.layout,
-                            "An error occurred, try again later",
-                            Snackbar.LENGTH_SHORT
-                        )
-                        .show()
-                }
-            },
-            { err ->
-                Log.e("ERR", err.networkResponse.toString())
-                Snackbar
-                    .make(
-                        binding.layout,
-                        "An error occurred, try again later",
-                        Snackbar.LENGTH_SHORT
-                    )
-                    .show()
-            }
-        ) {
-            override fun getByteData(): Map<String, DataPart>? {
-                val imagename = System.currentTimeMillis()
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                val outputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-                val byteArray: ByteArray = outputStream.toByteArray()
-
-                return HashMap<String, DataPart>().apply {
-                    put(
-                        "thumbnail",
-                        DataPart("$imagename.png", byteArray)
-                    )
-                }
-            }
-        }
-
-        queue.add(request)
+        // ambil id payment dari data payment yang dikirim dari intent (line 20)
+        val base64 = "aa" // ubah imageUri jadi base64, trus post ke server
     }
 }

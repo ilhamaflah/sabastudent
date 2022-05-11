@@ -4,12 +4,17 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
+import android.widget.ImageView
+import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
@@ -18,6 +23,7 @@ import com.squareup.picasso.Picasso
 import id.saba.saba.HOST
 import id.saba.saba.VolleyMultipartRequest
 import id.saba.saba.databinding.ActivityFormBinding
+import kotlinx.android.synthetic.main.activity_form.*
 import org.json.JSONException
 import org.json.JSONObject
 import splitties.toast.longToast
@@ -30,7 +36,7 @@ class FormActivity : AppCompatActivity() {
     private lateinit var tipe: String
     private lateinit var backDialog: AlertDialog
     private lateinit var img: Uri
-    var bitmap: Bitmap? = null
+    var bitmap : Bitmap? = null
     private lateinit var sharedPref: SharedPreferences
 
     private val launcher = registerForActivityResult(
@@ -74,10 +80,8 @@ class FormActivity : AppCompatActivity() {
 
         binding.btnFormPost.setOnClickListener {
             Log.d("FORM", img.toString())
-            if (bitmap == null) {
-            } else {
-                uploadBitmap(bitmap!!)
-            }
+            if(bitmap == null){ }
+            else{ uploadBitmap(bitmap!!) }
 
         }
 
@@ -105,26 +109,24 @@ class FormActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadBitmap(bitmap: Bitmap) {
+    private fun uploadBitmap(bitmap: Bitmap){
         val USER = sharedPref.getString("USER", "")
         val volleyMultipartRequest = object : VolleyMultipartRequest(
-            Request.Method.POST,
-            HOST().Host + "api/forum/tambah",
-            Response.Listener<NetworkResponse> {
-                fun onResponse(response: NetworkResponse) {
-                    try {
-                        val obj = JSONObject(String(response.data))
-                        longToast("Normal: " + obj.getString("success"))
-                        onBackPressed()
-                    } catch (e: JSONException) {
-                        longToast("Error: " + e.message.toString())
-                    }
+            Request.Method.POST, HOST().Host + "api/forum/tambah", Response.Listener<NetworkResponse> {
+            fun onResponse(response: NetworkResponse) {
+                try {
+                    val obj = JSONObject(String(response.data))
+                    longToast("Normal: " + obj.getString("success"))
+                    onBackPressed()
+                } catch (e: JSONException) {
+                    longToast("Error: " + e.message.toString())
                 }
-                onResponse(it)
-            },
+            }
+            onResponse(it)
+        },
             Response.ErrorListener {
                 toast(it.message.toString())
-            }) {
+            }){
             override fun getParams(): Map<String, String> {
                 return HashMap<String, String>().apply {
                     put("judul", binding.txtFormJudulLayout.editText?.text.toString())
@@ -136,13 +138,7 @@ class FormActivity : AppCompatActivity() {
             override fun getByteData(): MutableMap<String, DataPart> {
                 val imagename = System.currentTimeMillis()
                 return HashMap<String, DataPart>().apply {
-                    getFileDataFromDrawable(bitmap)?.let { bm -> DataPart("$imagename.png", bm) }
-                        ?.let {
-                            put(
-                                "thumbnail",
-                                it
-                            )
-                        }
+                    put("thumbnail", DataPart("$imagename.png", getFileDataFromDrawable(bitmap)))
                 }
             }
         }

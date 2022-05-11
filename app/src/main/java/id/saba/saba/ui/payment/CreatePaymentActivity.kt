@@ -3,15 +3,9 @@ package id.saba.saba.ui.payment
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.google.android.material.snackbar.Snackbar
-import id.saba.saba.HOST
 import id.saba.saba.databinding.ActivityCreatePaymentBinding
-import org.json.JSONObject
 
 class CreatePaymentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePaymentBinding
@@ -57,64 +51,11 @@ class CreatePaymentActivity : AppCompatActivity() {
         val description = binding.txtDescription.text.toString()
         val nominal = selectedNominal
 
-        val params: MutableMap<String, String> = HashMap()
+        val params = HashMap<String, Any>()
         params["judul"] = title
         params["deskripsi"] = description
-        params["biaya"] = nominal.toString()
+        params["biaya"] = nominal
 
-        val queue = Volley.newRequestQueue(this)
-        val url = "${HOST().Host}api/$USER/history-pembayaran/tambah"
-        val request = object : StringRequest(
-            Method.POST,
-            url,
-            { res ->
-                try {
-                    val data = JSONObject(res)
-
-                    if (data.getBoolean("success")) {
-                        finish()
-                        Snackbar
-                            .make(
-                                binding.root.rootView,
-                                "Success adding payment",
-                                Snackbar.LENGTH_SHORT
-                            )
-                            .show()
-                    } else {
-                        Log.d("RES", res.toString())
-                        Snackbar
-                            .make(
-                                binding.root.rootView,
-                                "An error occurred, try again later",
-                                Snackbar.LENGTH_SHORT
-                            )
-                            .show()
-                    }
-                } catch (e: Exception) {
-                    Log.e("ERR_RES", e.message.toString())
-                    Snackbar
-                        .make(
-                            binding.root.rootView,
-                            "An error occurred, try again later",
-                            Snackbar.LENGTH_SHORT
-                        )
-                        .show()
-                }
-            },
-            { err ->
-                Log.e("ERR", err.message.toString())
-                Snackbar
-                    .make(
-                        binding.root.rootView,
-                        "An error occurred, try again later",
-                        Snackbar.LENGTH_SHORT
-                    )
-                    .show()
-            }
-        ) {
-            override fun getParams() = params
-        }
-
-        queue.add(request)
+        // post params ke server
     }
 }
