@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -62,8 +64,9 @@ class DetailEventActivity : AppCompatActivity() {
         binding.imgDetailEventGambar.transitionName = "event-${event.id}"
 
         binding.txtDetailEventTitle.text = event.judul
-        //binding.txtDetailEventHeadline.text = event.headline
+        binding.txtDetailEventHeadline.text = event.judul
         binding.txtDetailEventDeskripsi.text = event.deskripsi
+        binding.txtDetailEventDeskripsi.movementMethod = ScrollingMovementMethod()
         binding.txtEventDetailTanggal.text = event.textTanggal()
         binding.txtEventDetailWaktu.text = event.textWaktu()
         //binding.btnEventDetailEarly.text = event.textEarly()

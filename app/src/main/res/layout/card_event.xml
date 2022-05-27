@@ -57,6 +57,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:minLines="1"
                 android:text="Deskripsi"
                 android:textSize="12sp" />
 

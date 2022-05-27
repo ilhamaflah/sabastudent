@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.app.ActivityCompat
@@ -134,25 +136,30 @@ class KostActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         map.setPadding(0, 0, 0, 128)
-        val builder = LatLngBounds.Builder()
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            if(!kosts.isEmpty()){
+                val builder = LatLngBounds.Builder()
 
-        // tambah marker
-        kosts.forEachIndexed { index, kost ->
-            builder.include(kost.koordinat)
-            val marker = map.addMarker(
-                MarkerOptions().position(kost.koordinat).title(kost.nama)
-            )
-            marker?.tag = index
-        }
+                // tambah marker
+                kosts.forEachIndexed { index, kost ->
+                    builder.include(kost.koordinat)
+                    val marker = map.addMarker(
+                        MarkerOptions().position(kost.koordinat).title(kost.nama)
+                    )
+                    marker?.tag = index
+                }
 
-        // biar map langsung zoom ke area semua marker
-        val bounds = builder.build()
-        val width = resources.displayMetrics.widthPixels
-        val height = resources.displayMetrics.heightPixels
-        val padding = (height * 0.2).toInt()
-        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
-        map.animateCamera(cu)
-        map.setOnMarkerClickListener(this)
+                // biar map langsung zoom ke area semua marker
+                val bounds = builder.build()
+                val width = resources.displayMetrics.widthPixels
+                val height = resources.displayMetrics.heightPixels
+                val padding = (height * 0.2).toInt()
+                val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+                map.animateCamera(cu)
+                map.setOnMarkerClickListener(this)
+            }
+        }, 500)
 
         /*with(map) {
             moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(LATITUDEINPUT.toDouble(), LONGITUDEINPUT.toDouble()), 15f))

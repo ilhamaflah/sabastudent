@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.UiModeManager
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -14,16 +13,14 @@ import androidx.navigation.ui.setupWithNavController
 import id.saba.saba.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import id.saba.saba.data.controllers.AdsController
 import id.saba.saba.databinding.BottomSheetCategoryBinding
 import id.saba.saba.ui.event.EventActivity
-import id.saba.saba.ui.forum.ForumActivity
 import id.saba.saba.ui.internship.InternshipActivity
 import id.saba.saba.ui.kost.KostActivity
 import id.saba.saba.ui.news.NewsActivity
-import id.saba.saba.ui.payment.PaymentActivity
 import id.saba.saba.ui.scholarship.ScholarshipActivity
 import splitties.activities.start
-import splitties.systemservices.uiModeManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +44,20 @@ class MainActivity : AppCompatActivity() {
         makeGpsOn()
         nightModeOff()
         initCategory()
+
+        /*// Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this) {}
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("ABCDEF012345"))
+                .build()
+        )*/
+        AdsController(this, "MainActivity", this).showInterstitial()
     }
 
     private fun initCategory() {
@@ -55,8 +66,8 @@ class MainActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
 
         bottomSheetBinding.cardForum.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            start<ForumActivity>()
+            //bottomSheetDialog.dismiss()
+            //start<ForumActivity>()
         }
 
         bottomSheetBinding.cardKost.setOnClickListener {

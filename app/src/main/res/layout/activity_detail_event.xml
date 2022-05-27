@@ -93,7 +93,7 @@
                 android:layout_weight="1"
                 android:lineSpacingMultiplier="0.8"
                 android:text="Music Concert"
-                android:textColor="@color/white"
+                android:textColor="@color/primary"
                 android:textFontWeight="900"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Theme.Sabaid.BottomSheetDragger" />
+                    style="@style/Theme.Sabaid.BottomSheetDragger" >
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout_editor_absoluteX="181dp"
+                    tools:layout_editor_absoluteY="16dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -146,11 +154,15 @@
 
                     <TextView
                         android:id="@+id/txtDetailEventDeskripsi"
-                        android:layout_marginTop="8dp"
+                        style="@style/TextAppearance.Sabaid.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Deskripsi"
-                        style="@style/TextAppearance.Sabaid.Body1"/>
+                        android:layout_marginTop="8dp"
+                        android:focusable="auto"
+                        android:focusableInTouchMode="true"
+                        android:maxLines="9"
+                        android:scrollbars="vertical"
+                        android:text="Deskripsi" />
 
                     <View
                         android:id="@+id/separatorBawah"

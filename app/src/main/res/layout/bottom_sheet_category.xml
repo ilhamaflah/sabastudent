@@ -89,12 +89,13 @@
                         android:src="@drawable/ic_forum" />
 
                     <TextView
+                        style="@style/Theme.Sabaid.FeatureName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         android:layout_gravity="center"
-                        android:text="Forum"
-                        style="@style/Theme.Sabaid.FeatureName" />
+                        android:layout_marginTop="4dp"
+                        android:text="Coming Soon"
+                        android:textColor="#FF0000" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
