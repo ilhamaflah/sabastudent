@@ -2,10 +2,6 @@
 
 Membuat aplikasi utama SABA ID.
 
-## By
-
-- [Ilham Aflah R.](https://github.com/ilhamaflah)
-
 ## Fitur dan Progres
 
 | Cek | Fitur dan Tugas | Progres (%) |
