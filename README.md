@@ -6,12 +6,12 @@ Membuat aplikasi utama SABA ID.
 
 | Cek | Fitur dan Tugas | Progres (%) |
 |-----|-----------------|------------------------ |
-| ✔ | Home                      | 95%
+| ✔ | Home                      | 99%
 | ✔ | News                      | 100%
 | ⚠ | Forum                     | 98%
-| ⚠ | Kost                      | 98%
+| ⚠ | Kost                      | 99%
 | ✔ | Event                     | 100%
 | ✔ | Internship                | 100%
 | ✔ | Scholarship               | 100%
-| ⚠ | Profile & Payment         | 90%
-| ⚠ | API Configuration         | 95%
+| ⚠ | Profile & Payment         | 99%
+| ⚠ | API Configuration         | 99%
